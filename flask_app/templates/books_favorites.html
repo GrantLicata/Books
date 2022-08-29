@@ -9,6 +9,51 @@
     <title>Books Favorite</title>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid ">
+          <a class="navbar-brand text-warning" href="#"><strong>Books & Authors</strong></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active text-light" aria-current="page" href="/"><u>Home</u></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active text-light" aria-current="page" href="/book_home"><u>Add Book</u></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </nav>
 
+    <!-- Main Contents -->
+    <div class="d-flex pt-4">
+        <div class="container">
+            <h1>Title: {{ book.title }}</h1>
+                <label for="authors">Favorited By:</label>
+                <ul name="authors" class="list-group">
+                    {% for author in book.authors %} 
+                    <li class="list-group-item">{{ author.name }}</li>
+                    {% endfor %}
+                </ul>
+        </div>
+        <div class="container">
+            <form action="/add_favorite_author/{{ book.id }}" method="post">
+              <h1>Add Book's Favorite</h1>
+              <label for="dojo" class="form-label">Author</label>
+              <input type="hidden" name="book_id" value="{{ book.id }}">
+              <select class="form-select mb-3" name="author_id">
+                  <option selected>-- Author --</option>
+                  {% for author in authors %}
+                  <option value="{{ author.id }}">{{ author.name }}</option>
+                  {% endfor %}
+              </select>
+              <button class="btn btn-secondary" type="submit">Add</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

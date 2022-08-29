@@ -1,46 +1,59 @@
-
-"""
-#REMINDERS
-1. The data coming from the database is in a dictionary format and turned into an object instance (model) we access throughout the application.
-
-#TO-DO:
-1. Update the initialization attributes to fit data coming from the server.
-2. Build out new queries and update the data in the template ones.
-"""
-
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app.models import author
+from pprint import pprint
 
-class User:
+class Book:
     def __init__(self ,data):
         self.id = data['id']
-        self.first_name = data['first_name']
-        self.last_name = data['last_name']
-        self.email = data['email']
+        self.title = data['title']
+        self.num_of_pages = data['num_of_pages']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
+        self.authors = []
 
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM users;"
-        results = connectToMySQL('<- Database Name ->').query_db(query)
+        query = "SELECT * FROM books;"
+        results = connectToMySQL('books_schema').query_db(query)
         data = []
-        for user in results:
-            data.append( cls(user) )
+        for book in results:
+            data.append( cls(book) )
+        return data
+
+    @classmethod
+    def get_one(cls, data):
+        query = "SELECT * FROM books WHERE id = %(id)s;"
+        results = connectToMySQL('books_schema').query_db( query, data )
+        print(results)
+        data = []
+        for book in results:
+            data.append( cls(book) )
         return data
 
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO users (first_name,last_name,email,created_at,updated_at) VALUES ( %(first_name)s , %(last_name)s , %(email)s , NOW() , NOW() );"
-        # data is a dictionary that will be passed into the save method from server.py
-        return connectToMySQL('<- Database Name ->').query_db( query, data )
+        query = "INSERT INTO books (title, num_of_pages, created_at, updated_at) VALUES ( %(title)s , %(num_of_pages)s , NOW() , NOW() );"
+        return connectToMySQL('books_schema').query_db( query, data )
 
     @classmethod
-    def update(cls, data):
-        query = "UPDATE users SET first_name = %(first_name)s, last_name = %(last_name)s, email = %(email)s, updated_at = NOW() WHERE id = %(id)s;"
+    def get_books_favorites(cls, data):
+        print("--------->", data)
+        query = "SELECT * FROM books LEFT JOIN favorites ON favorites.book_id = books.id LEFT JOIN authors ON favorites.author_id = authors.id WHERE books.id = %(id)s;"
+        results = connectToMySQL('books_schema').query_db( query, data )
+        book = cls(results[0])
+        pprint(results, sort_dicts=False, width=1)
+        for favorite in results:
+            author_data = {
+            'id': favorite['author_id'],
+            'name': favorite['name'],
+            'created_at': favorite['authors.created_at'],
+            'updated_at': favorite['authors.updated_at']
+            }
+            book.authors.append( author.Author(author_data) )
+        return book
+
+    @classmethod
+    def new_favorite_author(cls, data):
+        query = "INSERT INTO favorites (author_id, book_id) VALUES (%(author_id)s, %(book_id)s);"
         print(query)
-        return connectToMySQL('<- Database Name ->').query_db( query, data )
-
-    @classmethod
-    def delete(cls, data):
-        query = "DELETE FROM users WHERE id = %(id)s;"
-        return connectToMySQL('<- Database Name ->').query_db( query, data )
+        return connectToMySQL('books_schema').query_db(query, data)

@@ -12,40 +12,43 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid ">
-          <a class="navbar-brand text-warning" href="#"><strong>Books</strong></a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active text-light" aria-current="page" href="/"><u>Home</u></a>
-              </li>
-            </ul>
-          </div>
+            <a class="navbar-brand text-warning" href="#"><strong>Books & Authors</strong></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="/"><u>Home</u></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="/book_home"><u>Add Book</u></a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
     <div class="container d-flex mt-4">
 
-        <!-- New Dojo entry -->
-        <form class="container" action="/create_dojo" method="post">
-          <div class="container me-5">
-              <h1>New Books</h1>
-              <label for="title" class="form-label"><strong>Title</strong></label>
-              <input type="text" class="form-control" name="title">
-              <label for="number_of_pages" class="form-label"><strong>Number of Pages</strong></label>
-              <input type="text" class="form-control" name="number_of_pages">
-              <button type="submit" class="btn btn-secondary mt-2">Create</button>
-          </div>
+        <!-- New book entry -->
+        <form class="container" action="/save_book" method="post">
+            <div class="container me-5">
+                <h1>New Books</h1>
+                <label for="title" class="form-label"><strong>Title</strong></label>
+                <input type="text" class="form-control" name="title">
+                <label for="number_of_pages" class="form-label"><strong>Number of Pages</strong></label>
+                <input type="text" class="form-control" name="num_of_pages">
+                <button type="submit" class="btn btn-secondary mt-2">Create</button>
+            </div>
         </form>
-        <!-- List of all Dojo's -->
+        <!-- List of all books's -->
         <div class="container">
             <h1>All Books</h1>
             <ul class="list-group mt-4">
                 {% for book in books %}
-                <li class="list-group-item"><a href="/book_home/{{ book.id }}">{{ book.name }}</a></li>
+                <li class="list-group-item"><a href="/book_favorites/{{ book.id }}">{{ book.title }}</a></li>
                 {% endfor %}
-              </ul>
+            </ul>
         </div>
     </div>
 </body>

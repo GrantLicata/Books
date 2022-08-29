@@ -12,7 +12,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid ">
-          <a class="navbar-brand text-warning" href="#"><strong>Authors</strong></a>
+          <a class="navbar-brand text-warning" href="#"><strong>Books & Authors</strong></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -22,7 +22,7 @@
                 <a class="nav-link active text-light" aria-current="page" href="/"><u>Home</u></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active text-light" aria-current="page" href="/"><u>Add Book</u></a>
+                <a class="nav-link active text-light" aria-current="page" href="/book_home"><u>Add Book</u></a>
               </li>
             </ul>
           </div>
@@ -30,8 +30,8 @@
     </nav>
     <div class="container d-flex mt-4">
 
-        <!-- New Dojo entry -->
-        <form class="container" action="/create_dojo" method="post">
+        <!-- New Author entry -->
+        <form class="container" action="/save_author" method="post">
           <div class="container me-5">
               <h1>New Author</h1>
               <label for="name" class="form-label"><strong>Name</strong></label>
@@ -39,12 +39,12 @@
               <button type="submit" class="btn btn-secondary mt-2">Create</button>
           </div>
         </form>
-        <!-- List of all Dojo's -->
+        <!-- List of all Author's -->
         <div class="container">
             <h1>All Authors</h1>
             <ul class="list-group mt-4">
                 {% for author in authors %}
-                <li class="list-group-item"><a href="/authors_home/{{ book.id }}">{{ author.name }}</a></li>
+                <li class="list-group-item"><a href="/authors_page/{{ author.id }}">{{ author.name }}</a></li>
                 {% endfor %}
               </ul>
         </div>
